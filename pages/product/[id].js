@@ -1,12 +1,70 @@
 import { useRouter } from "next/router";
+import baseurl from "../../Helpers/baseurl";
+import { useRef, useEffect, useState } from "react";
 const Product = ({ product }) => {
   const router = useRouter();
+  const modalRef = useRef(null);
+  useEffect(() => {
+    M.Modal.init(modalRef.current);
+  }, []);
+
   if (router.isFallback) {
     return <h1>Loading...</h1>;
   }
+
+  const getModal = () => {
+    return (
+      <div id="modal1" className="modal" ref={modalRef}>
+        <div className="modal-content">
+          <h4>{product.name}</h4>
+          <p>Are you Sure, You want to delete this</p>
+        </div>
+        <div className="modal-footer">
+          <button
+            className="btn waves-effect waves-light #1565c0 red darken-3"
+            onClick={() => deleteProduct()}
+          >
+            Yes
+          </button>
+          <button className="btn waves-effect waves-light #1565c0 blue darken-3">
+            cancel
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  const deleteProduct = async () => {
+    const res = await fetch(`${baseurl}/api/product/${product._id}`, {
+      method: "DELETE",
+    });
+
+    await res.json();
+    router.push("/");
+  };
+
   return (
-    <div>
+    <div className="container center-align">
       <h1>{product.name}</h1>
+      <img style={{ width: "30%" }} src={product.mediaUrl} />
+      <h5>{product.price}</h5>
+      <input
+        type="number"
+        style={{ width: "400px", margin: "10px" }}
+        min="1"
+        placeholder="Quantity"
+      />
+      <button className="btn waves-effect waves-light #1565c0 blue darken-3">
+        Add <i className="material-icons right">add</i>
+      </button>
+      <p className="left-align">Rs.{product.description}</p>
+      <button
+        data-target="modal1"
+        className="btn modal-trigger waves-effect waves-light #c62828 red darken-3"
+      >
+        Delete <i className="material-icons left">delete</i>
+      </button>
+      {getModal()}
     </div>
   );
 };
@@ -24,7 +82,7 @@ const Product = ({ product }) => {
 
 //via getStaticProps
 export async function getStaticProps({ params: { id } }) {
-  const res = await fetch(`http://localhost:3000/api/product/${id}`);
+  const res = await fetch(`${baseurl}/api/product/${id}`);
   const data = await res.json();
   return {
     props: {
