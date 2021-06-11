@@ -1,5 +1,6 @@
 import Product from "../../../models/Product";
-
+import initDB from "../../../Helpers/initDB";
+initDB();
 export default async (req, res) => {
   switch (req.method) {
     case "GET":
