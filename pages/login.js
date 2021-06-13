@@ -26,6 +26,7 @@ const Login = () => {
     } else {
       console.log("yash");
       cookie.set("token", res2.token);
+      cookie.set("user", res2.user);
 
       router.push("/account");
     }

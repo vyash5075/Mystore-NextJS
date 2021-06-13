@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import baseurl from "../Helpers/baseurl";
+import { parseCookies } from "nookies";
 const Create = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -101,5 +102,24 @@ const Create = () => {
     </form>
   );
 };
+
+export async function getServerSideProps(ctx) {
+  const cookie = parseCookies(ctx);
+  const user = cookie.user ? JSON.parse(cookie.user) : "";
+  if (user == "") {
+    const { res } = ctx;
+    res.writeHead(302, { Location: "/" });
+    res.end();
+  }
+  if (user.role == "user" || user.role == "") {
+    const { res } = ctx;
+    res.writeHead(302, { Location: "/" });
+    res.end();
+  }
+
+  return {
+    props: {},
+  };
+}
 
 export default Create;

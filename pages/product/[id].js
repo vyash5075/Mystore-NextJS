@@ -1,9 +1,15 @@
 import { useRouter } from "next/router";
 import baseurl from "../../Helpers/baseurl";
 import { useRef, useEffect, useState } from "react";
+import { parseCookies } from "nookies";
+import cookie2 from "js-cookie";
+
 const Product = ({ product }) => {
+  const [quantity, setQuantity] = useState(1);
   const router = useRouter();
   const modalRef = useRef(null);
+  const cookie = parseCookies();
+  const user = cookie.user ? JSON.parse(cookie.user) : "";
   useEffect(() => {
     M.Modal.init(modalRef.current);
   }, []);
@@ -43,6 +49,27 @@ const Product = ({ product }) => {
     router.push("/");
   };
 
+  const AddToCart = async () => {
+    const res = await fetch(`${baseurl}/api/cart`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: cookie.token,
+      },
+      body: JSON.stringify({
+        quantity: quantity,
+        productId: product._id,
+      }),
+    });
+    const res2 = await res.json();
+    if (res2.error) {
+      M.toast({ html: res2.error, classes: "red" });
+      cookie2.remove("user");
+      cookie2.remove("token");
+      router.push("/login");
+    }
+    M.toast({ html: res2.message, classes: "green" });
+  };
   return (
     <div className="container center-align">
       <h1>{product.name}</h1>
@@ -53,17 +80,34 @@ const Product = ({ product }) => {
         style={{ width: "400px", margin: "10px" }}
         min="1"
         placeholder="Quantity"
+        onChange={(e) => setQuantity(Number(e.target.value))}
       />
-      <button className="btn waves-effect waves-light #1565c0 blue darken-3">
-        Add <i className="material-icons right">add</i>
-      </button>
+      {user ? (
+        <button
+          className="btn waves-effect waves-light #1565c0 blue darken-3"
+          onClick={() => AddToCart()}
+        >
+          Add <i className="material-icons right">add</i>
+        </button>
+      ) : (
+        <button
+          className="btn waves-effect waves-light #1565c0 blue darken-3"
+          onClick={() => router.push("/login")}
+        >
+          Login TO Add <i className="material-icons right">add</i>
+        </button>
+      )}
+
       <p className="left-align">Rs.{product.description}</p>
-      <button
-        data-target="modal1"
-        className="btn modal-trigger waves-effect waves-light #c62828 red darken-3"
-      >
-        Delete <i className="material-icons left">delete</i>
-      </button>
+      {user.role != "user" && (
+        <button
+          data-target="modal1"
+          className="btn modal-trigger waves-effect waves-light #c62828 red darken-3"
+        >
+          Delete
+          <i className="material-icons left">delete</i>
+        </button>
+      )}
       {getModal()}
     </div>
   );
