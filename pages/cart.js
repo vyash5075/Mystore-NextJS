@@ -5,7 +5,21 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useState } from "react";
 const Cart = ({ error }) => {
+  const { token } = parseCookies();
   const router = useRouter();
+
+  if (!token) {
+    return (
+      <div className="center-align">
+        <h3>Please login to view your cart</h3>
+        <Link href="/login">
+          <a>
+            <button className="btn #1565c0 blue darken-3">Login</button>
+          </a>
+        </Link>
+      </div>
+    );
+  }
 
   if (error) {
     M.toast({ html: error, classes: "red" });
