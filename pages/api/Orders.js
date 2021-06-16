@@ -1,4 +1,4 @@
-import initDb from "../../helpers/initDB";
+import initDb from "../../Helpers/initDB";
 import Order from "../../models/Order";
 import Authenticated from "../../Helpers/Authenticated";
 
