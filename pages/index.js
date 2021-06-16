@@ -34,7 +34,17 @@ const Home = ({ products }) => {
   );
 };
 
-export async function getStaticProps(context) {
+// export async function getStaticProps(context) {
+//   const res = await fetch(`${baseurl}/api/products`);
+//   const data = await res.json();
+//   return {
+//     props: {
+//       products: data,
+//     }, //will be passed  to the page component as props
+//   };
+// }
+
+export async function getServerSideProps(context) {
   const res = await fetch(`${baseurl}/api/products`);
   const data = await res.json();
   return {

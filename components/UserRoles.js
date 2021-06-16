@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { parseCookies } from "nookies";
-import baseurl from "../helpers/baseUrl";
+import baseurl from "../helpers/baseurl";
 
 function UserRoles() {
   const [users, setUsers] = useState([]);

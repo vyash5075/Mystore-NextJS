@@ -1,5 +1,5 @@
 import { parseCookies } from "nookies";
-import baseurl from "../helpers/baseUrl";
+import baseurl from "../helpers/baseurl";
 import { useEffect, useRef } from "react";
 import UserRoles from "../components/UserRoles";
 const Account = ({ orders }) => {

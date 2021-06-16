@@ -125,20 +125,30 @@ const Product = ({ product }) => {
 // }
 
 //via getStaticProps
-export async function getStaticProps({ params: { id } }) {
+// export async function getStaticProps({ params: { id } }) {
+//   const res = await fetch(`${baseurl}/api/product/${id}`);
+//   const data = await res.json();
+//   return {
+//     props: {
+//       product: data,
+//     }, //will be passed to page component as props
+//   };
+// }
+//we have to add getStaticPath,getStaticPath me hum log ko path mention krna padta hai  so that wo page ko build time pr ready krke rkhe
+// export async function getStaticPaths() {
+//   return {
+//     paths: [{ params: { id: "60c0f3161e75571fb168caaa" } }],
+//     fallback: true,
+//   };
+// }
+
+export async function getServerSideProps({ params: { id } }) {
   const res = await fetch(`${baseurl}/api/product/${id}`);
   const data = await res.json();
   return {
     props: {
       product: data,
     }, //will be passed to page component as props
-  };
-}
-//we have to add getStaticPath,getStaticPath me hum log ko path mention krna padta hai  so that wo page ko build time pr ready krke rkhe
-export async function getStaticPaths() {
-  return {
-    paths: [{ params: { id: "60c0f3161e75571fb168caaa" } }],
-    fallback: true,
   };
 }
 
