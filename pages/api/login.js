@@ -1,4 +1,4 @@
-import initDB from "../../helpers/initDB";
+import initDB from "../../Helpers/initDB";
 import User from "../../models/User";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";

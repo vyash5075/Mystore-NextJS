@@ -1,4 +1,4 @@
-import baseurl from "../helpers/baseurl";
+import baseurl from "../Helpers/baseurl";
 import { parseCookies } from "nookies";
 import cookie from "js-cookie";
 import { useRouter } from "next/router";

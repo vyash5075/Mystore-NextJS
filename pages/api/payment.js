@@ -3,7 +3,7 @@ import { v4 as uuidV4 } from "uuid"; //used version4 to generate random string
 import Cart from "../../models/Cart";
 import jwt from "jsonwebtoken";
 import Order from "../../models/Order";
-import initDb from "../../helpers/initDB";
+import initDb from "../../Helpers/initDB";
 
 initDb();
 
