@@ -45,7 +45,7 @@ export default async (req, res) => {
         description: `you purchased a product | ${paymentInfo.email}`,
       },
       {
-        idempotencyKey: uuidV4(),
+        idempotencyKey: uuidV4(), //unique string // is se hoga kya use ek hi bar charge ho
       }
     );
     await new Order({

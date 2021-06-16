@@ -8,6 +8,7 @@ function Authenticated(icomponent) {
     }
     try {
       const { userId } = jwt.verify(authorization, process.env.JWT_SECRET);
+      console.log("--------------" + userId);
       req.userId = userId;
       return icomponent(req, res);
     } catch (err) {

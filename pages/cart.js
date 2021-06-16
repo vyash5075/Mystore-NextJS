@@ -53,7 +53,7 @@ const Cart = ({ error, products }) => {
         {cProducts.map((item) => {
           price = price + item.quantity * item.product.price;
           return (
-            <div style={{ display: "flex", margin: "20px" }}>
+            <div style={{ display: "flex", margin: "20px" }} key={item._id}>
               <img src={item.product.mediaUrl} style={{ width: "30%" }}></img>
               <div style={{ marginLeft: "20px" }}>
                 <h6>{item.product.name}</h6>
@@ -78,7 +78,7 @@ const Cart = ({ error, products }) => {
 
   const handleCheckout = async (paymentInfo) => {
     console.log(paymentInfo);
-    const res = await fetch(`${baseUrl}/api/payment`, {
+    const res = await fetch(`${baseurl}/api/payment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -100,20 +100,21 @@ const Cart = ({ error, products }) => {
         style={{ display: "flex", justifyContent: "space-between" }}
       >
         <h5>Total ₹{price}</h5>
-
-        <StripeCheckout
-          name="My store"
-          amount={price * 100}
-          image={products.length > 0 ? products[0].product.mediaUrl : ""}
-          currency="INR"
-          shippingAddress={true}
-          billingAddress={true}
-          zipCode={true}
-          stripeKey="pk_test_51I2X3hGrayEPOSYzNuST8qTapfnQPj1h1QOQNfSR55XKZGBBT4xGCOh6kabo5nXlUpOBTNYRIpbnQzFFtihHUULY00VChVzHD6"
-          token={(paymentInfo) => handleCheckout(paymentInfo)}
-        >
-          <button className="btn">Checkout</button>
-        </StripeCheckout>
+        {products.length != 0 && (
+          <StripeCheckout
+            name="My store"
+            amount={price * 100}
+            image={products.length > 0 ? products[0].product.mediaUrl : ""}
+            currency="INR"
+            shippingAddress={true}
+            billingAddress={true}
+            zipCode={true}
+            stripeKey="pk_test_51I2X3hGrayEPOSYzNuST8qTapfnQPj1h1QOQNfSR55XKZGBBT4xGCOh6kabo5nXlUpOBTNYRIpbnQzFFtihHUULY00VChVzHD6"
+            token={(paymentInfo) => handleCheckout(paymentInfo)}
+          >
+            <button className="btn">Checkout</button>
+          </StripeCheckout>
+        )}
       </div>
     );
   };
